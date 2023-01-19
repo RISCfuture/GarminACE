@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "GarminACE",
+    defaultLocalization: "en",
     platforms: [.iOS(.v11), .macOS(.v10_13), .tvOS(.v11), .watchOS(.v4)],
     products: [
         .library(
@@ -19,7 +20,8 @@ let package = Package(
     targets: [
         .target(
             name: "GarminACE",
-            dependencies: ["SwiftScanner"]),
+            dependencies: ["SwiftScanner"],
+            resources: [.process("Resources")]),
         .testTarget(
             name: "GarminACETests",
             dependencies: ["GarminACE", "Nimble", "Quick"]),

@@ -32,7 +32,7 @@ public class ACEFileEncoder {
     
     public func writeToURL(URL: URL) throws {
         guard let stream = OutputStream(url: URL, append: false) else {
-            throw Error.invalidURL
+            throw EncoderError.invalidURL
         }
         try encode(to: stream)
     }
@@ -129,14 +129,9 @@ public class ACEFileEncoder {
     
     private func encode(string: String, to stream: OutputStream, newline: Bool = false) throws {
         guard let data = string.data(using: .windowsCP1252) else {
-            throw Error.invalidCharacterForEncoding
+            throw EncoderError.invalidCharacterForEncoding
         }
         try stream.write(data: data)
         if newline { try stream.write(data: self.newline) }
-    }
-    
-    public enum Error: Swift.Error {
-        case invalidCharacterForEncoding
-        case invalidURL
     }
 }

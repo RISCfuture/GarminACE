@@ -19,9 +19,9 @@ public class ACEFileDecoder {
     
     public func decode(data: Data) throws -> ChecklistFile {
         let header = data[data.startIndex...data.index(data.startIndex, offsetBy: 9)]
-        guard header == Constants.magicNumberAndRevision else { throw Error.invalidMagicNumberOrRevision }
+        guard header == Constants.magicNumberAndRevision else { throw DecoderError.invalidMagicNumberOrRevision }
         let body = data.advanced(by: 10)
-        guard let bodyString = String(data: body, encoding: .windowsCP1252) else { throw Error.invalidEncoding }
+        guard let bodyString = String(data: body, encoding: .windowsCP1252) else { throw DecoderError.invalidEncoding }
         return try decodeBody(bodyString)
         
         //TODO decode trailing binary data (unknown format)
@@ -33,29 +33,29 @@ public class ACEFileDecoder {
         let checklistSet = try scanHeader(scanner)
         while !scanner.match(Constants.setEnd) {
             guard let checklistGroup = try scanGroup(scanner) else {
-                throw Error.expectedChecklistGroup
+                throw DecoderError.expectedChecklistGroup
             }
             checklistSet.groups.append(checklistGroup)
         }
-        guard scanner.match(Constants.CRLF) else { throw Error.expectedNewline }
+        guard scanner.match(Constants.CRLF) else { throw DecoderError.expectedNewline }
         
         return checklistSet
     }
     
     private func scanHeader(_ scanner: StringScanner) throws -> ChecklistFile {
-        guard let name = try? scanner.scan(upTo: Constants.CRLF) else { throw Error.invalidHeader }
+        guard let name = try? scanner.scan(upTo: Constants.CRLF) else { throw DecoderError.invalidHeader }
         try scanner.skip(length: 2)
         
-        guard let makeAndModel = try? scanner.scan(upTo: Constants.CRLF) else { throw Error.invalidHeader }
+        guard let makeAndModel = try? scanner.scan(upTo: Constants.CRLF) else { throw DecoderError.invalidHeader }
         try scanner.skip(length: 2)
         
-         guard let aircraftInfo = try? scanner.scan(upTo: Constants.CRLF) else { throw Error.invalidHeader }
+         guard let aircraftInfo = try? scanner.scan(upTo: Constants.CRLF) else { throw DecoderError.invalidHeader }
         try scanner.skip(length: 2)
         
-        guard let manufacturerID = try? scanner.scan(upTo: Constants.CRLF) else { throw Error.invalidHeader }
+        guard let manufacturerID = try? scanner.scan(upTo: Constants.CRLF) else { throw DecoderError.invalidHeader }
         try scanner.skip(length: 2)
         
-        guard let copyright = try? scanner.scan(upTo: Constants.CRLF) else { throw Error.invalidHeader }
+        guard let copyright = try? scanner.scan(upTo: Constants.CRLF) else { throw DecoderError.invalidHeader }
         try scanner.skip(length: 2)
         
         return ChecklistFile(name: name, makeAndModel: makeAndModel, aircraftInfo: aircraftInfo, manufacturerID: manufacturerID, copyright: copyright)
@@ -65,20 +65,20 @@ public class ACEFileDecoder {
     private func scanGroup(_ scanner: StringScanner) throws -> ChecklistGroup? {
         guard try scanner.scan(length: 1) == Constants.groupStart else { return nil }
         
-        guard let indent = try? scanner.scan(length: 1).first else { throw Error.invalidGroup }
+        guard let indent = try? scanner.scan(length: 1).first else { throw DecoderError.invalidGroup }
         
-        guard let name = try? scanner.scan(upTo: Constants.CRLF) else { throw Error.invalidHeader }
+        guard let name = try? scanner.scan(upTo: Constants.CRLF) else { throw DecoderError.invalidHeader }
         try scanner.skip(length: 2)
         
         let group = ChecklistGroup(name: name, indent: try parseIndent(indent))
         
         while !scanner.match(Constants.groupEnd) {
             guard let checklist = try scanChecklist(scanner) else {
-                throw Error.expectedChecklist
+                throw DecoderError.expectedChecklist
             }
             group.checklists.append(checklist)
         }
-        guard scanner.match(Constants.CRLF) else { throw Error.expectedNewline }
+        guard scanner.match(Constants.CRLF) else { throw DecoderError.expectedNewline }
         
         return group
     }
@@ -86,9 +86,9 @@ public class ACEFileDecoder {
     private func scanChecklist(_ scanner: StringScanner) throws -> Checklist? {
         guard try scanner.scan(length: 1) == Constants.checklistStart else { return nil }
         
-        guard let indent = try? scanner.scan(length: 1).first else { throw Error.invalidChecklist }
+        guard let indent = try? scanner.scan(length: 1).first else { throw DecoderError.invalidChecklist }
 
-        guard let name = try? scanner.scan(upTo: Constants.CRLF) else { throw Error.invalidHeader }
+        guard let name = try? scanner.scan(upTo: Constants.CRLF) else { throw DecoderError.invalidHeader }
         try scanner.skip(length: 2)
         
         let checklist = Checklist(name: name, indent: try parseIndent(indent))
@@ -97,7 +97,7 @@ public class ACEFileDecoder {
             let item = try scanItem(scanner)
             checklist.items.append(item)
         }
-        guard scanner.match(Constants.CRLF) else { throw Error.expectedNewline }
+        guard scanner.match(Constants.CRLF) else { throw DecoderError.expectedNewline }
 
         return checklist
     }
@@ -107,13 +107,13 @@ public class ACEFileDecoder {
             return .blank
         }
         
-        guard let typeChar = try? scanner.scan(length: 1).first else { throw Error.invalidItem }
-        guard let indentChar = try? scanner.scan(length: 1).first else { throw Error.invalidItem }
+        guard let typeChar = try? scanner.scan(length: 1).first else { throw DecoderError.invalidItem }
+        guard let indentChar = try? scanner.scan(length: 1).first else { throw DecoderError.invalidItem }
         
-        guard let type = ItemType(rawValue: typeChar) else { throw Error.invalidItem }
+        guard let type = ItemType(rawValue: typeChar) else { throw DecoderError.invalidItem }
         let indent = try parseIndent(indentChar)
         
-        guard let content = try? scanner.scan(upTo: Constants.CRLF) else { throw Error.invalidHeader }
+        guard let content = try? scanner.scan(upTo: Constants.CRLF) else { throw DecoderError.invalidHeader }
         try scanner.skip(length: 2)
         
         switch type {
@@ -131,21 +131,7 @@ public class ACEFileDecoder {
     private func parseIndent(_ indent: Character) throws -> Indent {
         if indent == Constants.centeredIndent { return .centered }
         else if let level = UInt(String(indent)) { return .level(level) }
-        else { throw Error.invalidIndentLevel(indent) }
-    }
-    
-    enum Error: Swift.Error {
-        case invalidMagicNumberOrRevision
-        case invalidEncoding
-        case invalidHeader
-        case invalidGroup
-        case invalidChecklist
-        case expectedChecklistGroup
-        case expectedChecklist
-        case expectedNewline
-        case invalidItem
-        case invalidIndentLevel(_ indent: Character)
-        case missingEnd
+        else { throw DecoderError.invalidIndentLevel(indent) }
     }
     
     private enum ItemType: Character {

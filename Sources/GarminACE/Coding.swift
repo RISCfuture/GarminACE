@@ -13,10 +13,6 @@ extension Indent: Codable {
         case level
     }
     
-    public enum CodingError: Error {
-        case unknownValue
-    }
-    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Key.self)
         let type = try container.decode(String.self, forKey: .type)
@@ -25,7 +21,7 @@ extension Indent: Codable {
                 let level = try container.decode(UInt.self, forKey: .level)
                 self = .level(level)
             case "centered": self = .centered
-            default: throw CodingError.unknownValue
+            default: throw CodingError.unknownValue(type)
         }
     }
     
@@ -48,10 +44,6 @@ extension Checklist.Item: Codable {
         case challenge
         case response
         case indent
-    }
-    
-    public enum CodingError: Error {
-        case unknownValue
     }
     
     public init(from decoder: Decoder) throws {
@@ -85,7 +77,7 @@ extension Checklist.Item: Codable {
                 self = .challengeResponse(challenge: challenge, response: response, indent: indent)
             case "blank":
                 self = .blank
-            default: throw CodingError.unknownValue
+            default: throw CodingError.unknownValue(type)
         }
     }
     
@@ -122,3 +114,4 @@ extension Checklist.Item: Codable {
         }
     }
 }
+
