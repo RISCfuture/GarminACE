@@ -34,6 +34,9 @@ let decodedChecklistSet = try JSONDecoder().decode(ChecklistFile.self, from: dat
 
 ## Documentation
 
+Online API documentation and tutorials are available at
+https://riscfuture.github.io/GarminACE/documentation/garminace/
+
 DocC documentation is available, including tutorials and API documentation. For
 Xcode documentation, you can run
 
