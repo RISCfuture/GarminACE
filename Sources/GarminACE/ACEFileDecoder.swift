@@ -2,21 +2,17 @@ import Foundation
 import SwiftScanner
 
 /**
- Decodes an `.ace` file into a [ChecklistFile](x-source-tag://ChecklistFile)
- instance.
+ Decodes an `.ace` file into a ``ChecklistFile`` instance.
  */
-
 public class ACEFileDecoder {
     
     /**
-     Decodes a `Data` instance into a
-     [ChecklistFile](x-source-tag://ChecklistFile).
+     Decodes a `Data` instance into a ``ChecklistFile``.
      
-     - parameter data: The data of the `.ace` file.
-     - returns: The parsed checklists.
-     - throws: If a parse error occurs.
+     - Parameter data: The data of the `.ace` file.
+     - Returns: The parsed checklists.
+     - Throws: If a parse error occurs.
      */
-    
     public func decode(data: Data) throws -> ChecklistFile {
         let header = data[data.startIndex...data.index(data.startIndex, offsetBy: 9)]
         guard header == Constants.magicNumberAndRevision else { throw DecoderError.invalidMagicNumberOrRevision }

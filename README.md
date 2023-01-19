@@ -32,6 +32,21 @@ let jsonData = try JSONEncoder().encode(checklistSet)
 let decodedChecklistSet = try JSONDecoder().decode(ChecklistFile.self, from: data)
 ```
 
+## Documentation
+
+DocC documentation is available, including tutorials and API documentation. For
+Xcode documentation, you can run
+
+```sh
+swift package generate-documentation --target GarminACE
+```
+
+to generate a docarchive at
+`.build/plugins/Swift-DocC/outputs/GarminACE.doccarchive`. You can open this
+docarchive file in Xcode for browseable API documentation. Or, within Xcode,
+open the GarminACE package in Xcode and choose **Build Documentation** from the
+**Product** menu.
+
 ## Developing
 
 This package contains a short test suite written using Nimble and Quick. Use `swift test`

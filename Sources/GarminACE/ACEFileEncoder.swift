@@ -1,26 +1,32 @@
-//
-//  File.swift
-//  
-//
-//  Created by Tim Morgan on 5/1/20.
-//
-
 import Foundation
 
 /**
+ Encodes a ``ChecklistFile`` into a `.ace` file.
+ 
  - Important: This class is incomplete and does not yet generate valid `.ace`
    files.
  */
-
 public class ACEFileEncoder {
+    
+    /// The checklist file to encode.
     public let checklistSet: ChecklistFile
     
     private let newline = Data([13, 10])
     
-    init(checklistSet: ChecklistFile) {
+    /**
+     Creates a new instance for encoding.
+     
+     - Parameter checklistSet: The checklist file to encode.
+     */
+    public init(checklistSet: ChecklistFile) {
         self.checklistSet = checklistSet
     }
     
+    /**
+     Writes the `.ace` file data to a `Data` instance.
+     
+     - Returns: The data containing the `.ace` data.
+     */
     public func writeToData() throws -> Data {
         let stream = OutputStream.toMemory()
         stream.open()
@@ -30,6 +36,11 @@ public class ACEFileEncoder {
         return stream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
     }
     
+    /**
+     Writes the `.ace` file.
+     
+     - Parameter url: The file URL to write to.
+     */
     public func writeToURL(URL: URL) throws {
         guard let stream = OutputStream(url: URL, append: false) else {
             throw EncoderError.invalidURL
@@ -37,6 +48,11 @@ public class ACEFileEncoder {
         try encode(to: stream)
     }
     
+    /**
+     Writes the `.ace` file data to an output stream.
+     
+     - Parameter stream: The output stream to write to.
+     */
     public func encode(to stream: OutputStream) throws {
         try stream.write(data: Constants.magicNumberAndRevision)
         try encode(set: checklistSet, to: stream)

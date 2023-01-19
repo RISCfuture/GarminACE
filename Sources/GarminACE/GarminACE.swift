@@ -1,30 +1,29 @@
 import Foundation
 
 /**
- A collection of [checklist groups](x-source-tag://ChecklistGroup) that appear
- together in a `.ace` file.
+ A collection of ``ChecklistGroup``s that appear together in a `.ace` file.
  
- - Tag: ChecklistFile
+ This class implements `Codable`, so you can re-export checklists in a more
+ universal format (such as JSON).
  */
-
 public final class ChecklistFile: Codable {
     
-    /** The title of the checklist file (from the metadata, not the filename). */
+    /// The title of the checklist file (from the metadata, not the filename).
     public var name: String
     
-    /** The aircraft make and model from the checklist file metadata. */
+    /// The aircraft make and model from the checklist file metadata.
     public var makeAndModel: String
     
-    /** The aircraft info from the checklist file metadata. */
+    /// The aircraft info from the checklist file metadata.
     public var aircraftInfo: String
     
-    /** The aircraft manufacturer ID from the checklist file metadata. */
+    /// The aircraft manufacturer ID from the checklist file metadata.
     public var manufacturerID: String
     
-    /** The copyright string from the checklist file metadata. */
+    /// The copyright string from the checklist file metadata.
     public var copyright: String
     
-    /** The [checklist groups](x-source-tag://ChecklistGroup) in this file. */
+    /// The checklist groups in this file.
     public var groups: [ChecklistGroup]
     
     init(name: String, makeAndModel: String, aircraftInfo: String, manufacturerID: String, copyright: String) {
@@ -38,22 +37,17 @@ public final class ChecklistFile: Codable {
     }
 }
 
-/**
- A group of [checklists](x-source-tag://Checklist), such as "Normal Procedures"
- or "Supplemental Procedures".
- 
- - Tag: ChecklistGroup
- */
-
+/// A group of ``Checklist``s, such as "Normal Procedures" or
+/// "Supplemental Procedures".
 public final class ChecklistGroup: Codable {
     
-    /** The title of the group. */
+    /// The title of the group.
     public var name: String
     
-    /** The indent level of the group. */
+    /// The indent level of the group.
     public var indent: Indent
     
-    /** The [checklists](x-source-tag://Checklist) in this group. */
+    /// The checklists in this group.
     public var checklists: [Checklist]
     
     init(name: String, indent: Indent) {
@@ -64,21 +58,16 @@ public final class ChecklistGroup: Codable {
     }
 }
 
-/**
- A single checklist.
- 
- - Tag: Checklist
- */
-
+/// A single checklist, consisting of multiple ``Item``s.
 public final class Checklist: Codable {
     
-    /** The checklist title. */
+    /// The checklist title.
     public var name: String
     
-    /** The checklist's indent level. */
+    /// The checklist's indent level.
     public var indent: Indent
     
-    /** The [items](x-source-tag://Item) making up this checklist. */
+    /// The items making up this checklist.
     public var items: [Item]
     
     init(name: String, indent: Indent) {
@@ -92,31 +81,61 @@ public final class Checklist: Codable {
      An item in a checklist. Checklist items can be normal challenge-respose
      prompts, headers, notes of varying intensity levels, plaintext blocks, or
      blank lines.
-     
-     - Tag: Item
      */
-    
+
     public enum Item {
         
-        /** A header item. */
+        /**
+         A header item.
+         
+         - Parameter text: The item text.
+         - Parameter indent: The indent level.
+         */
         case title(text: String, indent: Indent)
         
-        /** A block of text presented at the warning (most critical) level. */
+        /**
+         A block of text presented at the warning (most critical) level.
+         
+         - Parameter text: The item text.
+         - Parameter indent: The indent level.
+         */
         case warning(text: String, indent: Indent)
         
-        /** A block of text presented at the caution level. */
+        /**
+         A block of text presented at the caution level.
+         
+         - Parameter text: The item text.
+         - Parameter indent: The indent level.
+         */
         case caution(text: String, indent: Indent)
         
-        /** A block of text presented at the note (least critical) level. */
+        /**
+         A block of text presented at the note (least critical) level.
+         
+         - Parameter text: The item text.
+         - Parameter indent: The indent level.
+         */
         case note(text: String, indent: Indent)
         
-        /** An unformatted block of text. */
+        /**
+         An unformatted block of text.
+         
+         - Parameter text: The item text.
+         - Parameter indent: The indent level.
+         */
         case plaintext(text: String, indent: Indent)
         
-        /** A challenge prompt and its response (can be checked by the user). */
+        /**
+         A challenge prompt and its response. Challenge/responses are the only
+         checklist item that can be checked by the user.
+         
+         - Parameter challenge: The item challenge, such as "Flaps".
+         - Parameter response: The challenge response, such as "DOWN".
+         - Parameter indent: The indent level.
+         */
         case challengeResponse(challenge: String, response: String, indent: Indent)
         
-        /** A blank line. */
+        /// A blank line, for spacing.
         case blank
     }
 }
@@ -126,11 +145,14 @@ public final class Checklist: Codable {
  indent levels are allowed (0 through 4), as well as an affordance for centered
  text.
  */
-
 public enum Indent {
-    /** Text is indented _n_ levels deep from the left side. */
+    /**
+     Text is indented _n_ levels deep from the left side.
+     
+     - Parameter level: The indent level.
+     */
     case level(_ level: UInt)
     
-    /** Text is centered. */
+    /// Text is centered.
     case centered
 }

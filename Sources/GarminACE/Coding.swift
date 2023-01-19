@@ -1,10 +1,3 @@
-//
-//  File.swift
-//
-//
-//  Created by Tim Morgan on 5/1/20.
-//
-
 import Foundation
 
 extension Indent: Codable {

@@ -1,16 +1,43 @@
 import Foundation
 
+/// Errors that can occur when decoding an `.ace` file.
 public enum DecoderError: Error {
+    
+    /// The magic number or revision at the start of the file is invalid.
     case invalidMagicNumberOrRevision
+    
+    /// The file is not CP12520-encoded.
     case invalidEncoding
+    
+    /// The header data is invalid.
     case invalidHeader
+    
+    /// The checklist group data is invalid.
     case invalidGroup
+    
+    /// The checklist data is invalid.
     case invalidChecklist
+    
+    /// A checklist group was expected but none was found.
     case expectedChecklistGroup
+    
+    /// A checklist was expected but none was found.
     case expectedChecklist
+    
+    /// A newline was expected but none was found.
     case expectedNewline
+    
+    /// The checklist item data is invalid.
     case invalidItem
+    
+    /**
+     An invalid indent level was specified.
+     
+     - Parameter indent: The indent level.
+     */
     case invalidIndentLevel(_ indent: Character)
+    
+    /// The checksum data at the end of the file was expected but none was found.
     case missingEnd
 }
 
@@ -54,8 +81,13 @@ extension DecoderError: LocalizedError {
 
 // MARK: -
 
+/// Errors that can occur when writing an `.ace` file.
 public enum EncoderError: Error {
+    
+    /// Cannot encode a character into CP1252.
     case invalidCharacterForEncoding
+    
+    /// Output URL cannot be written to.
     case invalidURL
 }
 
@@ -85,7 +117,14 @@ extension EncoderError: LocalizedError {
 
 // MARK: -
 
+/// Errors that can occur when encoding/decoding a ``ChecklistFile``.
 public enum CodingError: Error {
+    
+    /**
+     An unknown value for a field was provided.
+     
+     - Parameter value: The unknown value.
+     */
     case unknownValue(_ value: String)
 }
 
