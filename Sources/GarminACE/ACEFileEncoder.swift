@@ -38,10 +38,7 @@ public class ACEFileEncoder {
     }
     
     public func encode(to stream: OutputStream) throws {
-        Constants.magicNumberAndRevision.withUnsafeBytes {
-            stream.write($0, maxLength: Constants.magicNumberAndRevision.count)
-        }
-        
+        try stream.write(data: Constants.magicNumberAndRevision)
         try encode(set: checklistSet, to: stream)
         try encode(string: Constants.setEnd, to: stream, newline: true)
         
@@ -134,10 +131,8 @@ public class ACEFileEncoder {
         guard let data = string.data(using: .windowsCP1252) else {
             throw Error.invalidCharacterForEncoding
         }
-        _ = data.withUnsafeBytes { stream.write($0, maxLength: data.count) }
-        if newline {
-            _ = self.newline.withUnsafeBytes { stream.write($0, maxLength: self.newline.count) }
-        }
+        try stream.write(data: data)
+        if newline { try stream.write(data: self.newline) }
     }
     
     public enum Error: Swift.Error {
