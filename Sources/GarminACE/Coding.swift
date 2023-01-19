@@ -14,7 +14,7 @@ extension Indent: Codable {
                 let level = try container.decode(UInt.self, forKey: .level)
                 self = .level(level)
             case "centered": self = .centered
-            default: throw CodingError.unknownValue(type)
+            default: throw CodingError.unknownIndent(type)
         }
     }
     
@@ -70,7 +70,7 @@ extension Checklist.Item: Codable {
                 self = .challengeResponse(challenge: challenge, response: response, indent: indent)
             case "blank":
                 self = .blank
-            default: throw CodingError.unknownValue(type)
+            default: throw CodingError.unknownItemType(type)
         }
     }
     

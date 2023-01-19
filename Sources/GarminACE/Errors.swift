@@ -121,11 +121,18 @@ extension EncoderError: LocalizedError {
 public enum CodingError: Error {
     
     /**
-     An unknown value for a field was provided.
+     An unknown value for an indent level was provided.
      
      - Parameter value: The unknown value.
      */
-    case unknownValue(_ value: String)
+    case unknownIndent(_ value: String)
+    
+    /**
+     An unknown checklist item type was provided.
+     
+     - Parameter value: The unknown value.
+     */
+    case unknownItemType(_ value: String)
 }
 
 extension CodingError: LocalizedError {
@@ -135,8 +142,12 @@ extension CodingError: LocalizedError {
     
     public var failureReason: String? {
         switch self {
-            case let .unknownValue(value):
-                return t("Invalid constant value “%@”.", comment: "failure reason",
+            case let .unknownIndent(value):
+                return t("Invalid indent value “%@”.", comment: "failure reason",
+                         value)
+                
+            case let .unknownItemType(value):
+                return t("Invalid item type “%@”.", comment: "failure reason",
                          value)
         }
     }
