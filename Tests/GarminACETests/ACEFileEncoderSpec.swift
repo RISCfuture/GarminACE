@@ -5,22 +5,14 @@ import Quick
 
 class ACEEncoderSpec: QuickSpec {
     private let checklistSet: ChecklistFile = {
-        let thisFileURL = URL(fileURLWithPath: #file)
-        let fixtureFileURL = thisFileURL
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .appendingPathComponent("Fixtures/g3x_cklst.json")
-        let data = try! Data(contentsOf: fixtureFileURL)
+        let url = Bundle.module.url(forResource: "g3x_cklst", withExtension: "json")!
+        let data = try! Data(contentsOf: url)
         return try! JSONDecoder().decode(ChecklistFile.self, from: data)
     }()
     
     private let fixtureData: Data = {
-        let thisFileURL = URL(fileURLWithPath: #file)
-        let fixtureFileURL = thisFileURL
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .appendingPathComponent("Fixtures/g3x_cklst.ace")
-        return try! Data(contentsOf: fixtureFileURL)
+        let url = Bundle.module.url(forResource: "g3x_cklst", withExtension: "ace")!
+        return try! Data(contentsOf: url)
     }()
     
     override func spec() {

@@ -6,18 +6,13 @@ import Quick
 @available(OSX 10.15, *)
 class ACEDecoderSpec: QuickSpec {
     private let fixtureData: Data = {
-        let thisFileURL = URL(fileURLWithPath: #file)
-        let fixtureFileURL = thisFileURL
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .appendingPathComponent("Fixtures/g3x_cklst.ace")
-        return try! Data(contentsOf: fixtureFileURL)
+        let url = Bundle.module.url(forResource: "g3x_cklst", withExtension: "ace")!
+        return try! Data(contentsOf: url)
     }()
     
     override func spec() {
         it("imports the example checklist") {
             let set = try! ACEFileDecoder().decode(data: self.fixtureData)
-            try! (try! JSONEncoder().encode(set)).write(to: URL(fileURLWithPath: "/Users/tmorgan/Desktop/foo.json"))
             
             expect(set.name).to(equal("GARMIN CHECKLIST PN XXX-XXXXX-XX"))
             expect(set.groups.count).to(equal(9))

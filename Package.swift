@@ -24,6 +24,7 @@ let package = Package(
             resources: [.process("Resources")]),
         .testTarget(
             name: "GarminACETests",
-            dependencies: ["GarminACE", "Nimble", "Quick"]),
+            dependencies: ["GarminACE", "Nimble", "Quick"],
+            resources: [.copy("Resources")])
     ]
 )
