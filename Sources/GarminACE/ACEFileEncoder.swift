@@ -1,10 +1,8 @@
 import Foundation
+import CryptoSwift
 
 /**
  Encodes a ``ChecklistFile`` into a `.ace` file.
- 
- - Important: This class is incomplete and does not yet generate valid `.ace`
-   files.
  */
 public class ACEFileEncoder {
     
@@ -28,12 +26,9 @@ public class ACEFileEncoder {
      - Returns: The data containing the `.ace` data.
      */
     public func writeToData() throws -> Data {
-        let stream = OutputStream.toMemory()
-        stream.open()
-        try encode(to: stream)
-        stream.close()
-        
-        return stream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data
+        var data = Data()
+        try write(to: &data)
+        return data
     }
     
     /**
@@ -41,113 +36,117 @@ public class ACEFileEncoder {
      
      - Parameter url: The file URL to write to.
      */
-    public func writeToURL(URL: URL) throws {
-        guard let stream = OutputStream(url: URL, append: false) else {
-            throw EncoderError.invalidURL
-        }
-        try encode(to: stream)
+    public func write(to url: URL) throws {
+        var data = Data()
+        try write(to: &data)
+        try data.write(to: url)
     }
     
     /**
-     Writes the `.ace` file data to an output stream.
+     Writes the `.ace` file data to a `Data` object.
      
-     - Parameter stream: The output stream to write to.
+     - Parameter data: The `Data` to write to.
      */
-    public func encode(to stream: OutputStream) throws {
-        try stream.write(data: Constants.magicNumberAndRevision)
-        try encode(set: checklistSet, to: stream)
-        try encode(string: Constants.setEnd, to: stream, newline: true)
+    public func write(to data: inout Data) throws {
+        data.append(Constants.magicNumberAndRevision)
+        try encode(set: checklistSet, to: &data)
+        try encode(string: Constants.setEnd, to: &data, newline: true)
         
-        //TODO encode trailing binary data (unknown format)
+        data.append(checksum(for: data))
     }
     
-    private func encode(set: ChecklistFile, to stream: OutputStream) throws {
-        try encode(string: set.name, to: stream, newline: true)
-        try encode(string: set.makeAndModel, to: stream, newline: true)
-        try encode(string: set.aircraftInfo, to: stream, newline: true)
-        try encode(string: set.manufacturerID, to: stream, newline: true)
-        try encode(string: set.copyright, to: stream, newline: true)
+    private func encode(set: ChecklistFile, to data: inout Data) throws {
+        try encode(string: set.name, to: &data, newline: true)
+        try encode(string: set.makeAndModel, to: &data, newline: true)
+        try encode(string: set.aircraftInfo, to: &data, newline: true)
+        try encode(string: set.manufacturerID, to: &data, newline: true)
+        try encode(string: set.copyright, to: &data, newline: true)
         
         for group in set.groups {
-            try encode(group: group, to: stream)
+            try encode(group: group, to: &data)
         }
     }
     
-    private func encode(group: ChecklistGroup, to stream: OutputStream) throws {
-        try encode(string: Constants.groupStart, to: stream)
-        try encode(indent: group.indent, to: stream)
-        try encode(string: group.name, to: stream, newline: true)
+    private func encode(group: ChecklistGroup, to data: inout Data) throws {
+        try encode(string: Constants.groupStart, to: &data)
+        try encode(indent: group.indent, to: &data)
+        try encode(string: group.name, to: &data, newline: true)
         
         for checklist in group.checklists {
-            try encode(checklist: checklist, to: stream)
+            try encode(checklist: checklist, to: &data)
         }
         
-        try encode(string: Constants.groupEnd, to: stream, newline: true)
+        try encode(string: Constants.groupEnd, to: &data, newline: true)
     }
     
-    private func encode(checklist: Checklist, to stream: OutputStream) throws {
-        try encode(string: Constants.checklistStart, to: stream)
-        try encode(indent: checklist.indent, to: stream)
-        try encode(string: checklist.name, to: stream, newline: true)
+    private func encode(checklist: Checklist, to data: inout Data) throws {
+        try encode(string: Constants.checklistStart, to: &data)
+        try encode(indent: checklist.indent, to: &data)
+        try encode(string: checklist.name, to: &data, newline: true)
         
         for item in checklist.items {
-            try encode(item: item, to: stream)
+            try encode(item: item, to: &data)
         }
         
-        try encode(string: Constants.checklistEnd, to: stream, newline: true)
+        try encode(string: Constants.checklistEnd, to: &data, newline: true)
     }
     
-    private func encode(item: Checklist.Item, to stream: OutputStream) throws {
+    private func encode(item: Checklist.Item, to data: inout Data) throws {
         switch item {
             case .title(let text, let indent):
-                try encode(string: "t", to: stream)
-                try encode(indent: indent, to: stream)
-                try encode(string: text, to: stream, newline: true)
+                try encode(string: "t", to: &data)
+                try encode(indent: indent, to: &data)
+                try encode(string: text, to: &data, newline: true)
             case .warning(let text, let indent):
-                try encode(string: "w", to: stream)
-                try encode(indent: indent, to: stream)
-                try encode(string: text, to: stream, newline: true)
+                try encode(string: "w", to: &data)
+                try encode(indent: indent, to: &data)
+                try encode(string: text, to: &data, newline: true)
             case .caution(let text, let indent):
-                try encode(string: "c", to: stream)
-                try encode(indent: indent, to: stream)
-                try encode(string: text, to: stream, newline: true)
+                try encode(string: "c", to: &data)
+                try encode(indent: indent, to: &data)
+                try encode(string: text, to: &data, newline: true)
             case .note(let text, let indent):
-                try encode(string: "n", to: stream)
-                try encode(indent: indent, to: stream)
-                try encode(string: text, to: stream, newline: true)
+                try encode(string: "n", to: &data)
+                try encode(indent: indent, to: &data)
+                try encode(string: text, to: &data, newline: true)
             case .plaintext(let text, let indent):
-                try encode(string: "p", to: stream)
-                try encode(indent: indent, to: stream)
-                try encode(string: text, to: stream, newline: true)
+                try encode(string: "p", to: &data)
+                try encode(indent: indent, to: &data)
+                try encode(string: text, to: &data, newline: true)
             case .challengeResponse(let challenge, let response, let indent):
-                try encode(string: "r", to: stream)
-                try encode(indent: indent, to: stream)
-                try encode(string: challenge, to: stream)
-                try encode(character: Constants.challengeResponseSeparator, to: stream)
-                try encode(string: response, to: stream, newline: true)
+                try encode(string: "r", to: &data)
+                try encode(indent: indent, to: &data)
+                try encode(string: challenge, to: &data)
+                try encode(character: Constants.challengeResponseSeparator, to: &data)
+                try encode(string: response, to: &data, newline: true)
             case .blank:
-                try encode(string: "", to: stream, newline: true)
+                try encode(string: "", to: &data, newline: true)
         }
     }
     
-    private func encode(indent: Indent, to stream: OutputStream) throws {
+    private func encode(indent: Indent, to data: inout Data) throws {
         switch indent {
             case .centered:
-                try encode(character: Constants.centeredIndent, to: stream)
+                try encode(character: Constants.centeredIndent, to: &data)
             case .level(let level):
-                try encode(string: String(level), to: stream)
+                try encode(string: String(level), to: &data)
         }
     }
     
-    private func encode(character: Character, to stream: OutputStream) throws {
-        try encode(string: String(character), to: stream)
+    private func encode(character: Character, to data: inout Data) throws {
+        try encode(string: String(character), to: &data)
     }
     
-    private func encode(string: String, to stream: OutputStream, newline: Bool = false) throws {
-        guard let data = string.data(using: .windowsCP1252) else {
+    private func encode(string: String, to data: inout Data, newline: Bool = false) throws {
+        guard let stringData = string.data(using: .windowsCP1252) else {
             throw EncoderError.invalidCharacterForEncoding
         }
-        try stream.write(data: data)
-        if newline { try stream.write(data: self.newline) }
+        data.append(stringData)
+        if newline { data.append(self.newline) }
+    }
+    
+    private func checksum(for data: Data) -> Data {
+        let bytes = data.crc32().bytes.reversed().map { ~$0 & 0xFF }
+        return bytes.withUnsafeBytes { Data($0) }
     }
 }

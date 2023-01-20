@@ -16,12 +16,13 @@ let package = Package(
         .package(url: "https://github.com/malcommac/SwiftScanner.git", from: "1.1.0"),
         .package(url: "https://github.com/Quick/Quick.git", from: "2.2.0"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.7"),
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
+        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.6.0")
     ],
     targets: [
         .target(
             name: "GarminACE",
-            dependencies: ["SwiftScanner"],
+            dependencies: ["SwiftScanner", "CryptoSwift"],
             resources: [.process("Resources")]),
         .testTarget(
             name: "GarminACETests",
