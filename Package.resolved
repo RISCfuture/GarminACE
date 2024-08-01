@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
       "state" : {
-        "revision" : "7892a123f7e8d0fe62f9f03728b17bbd4f94df5c",
-        "version" : "1.8.1"
+        "revision" : "c9c3df6ab812de32bae61fc0cd1bf6d45170ebf0",
+        "version" : "1.8.2"
       }
     },
     {
@@ -30,7 +30,7 @@
     {
       "identity" : "swift-docc-plugin",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-docc-plugin",
+      "location" : "https://github.com/apple/swift-docc-plugin.git",
       "state" : {
         "revision" : "26ac5758409154cc448d7ab82389c520fa8a8247",
         "version" : "1.3.0"
