@@ -1,0 +1,72 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Couldn’t decode checklist file." : {
+      "comment" : "error description"
+    },
+    "Couldn’t decode checklist." : {
+      "comment" : "error description"
+    },
+    "Couldn’t write checklist file." : {
+      "comment" : "error description"
+    },
+    "Expected checklist data but found none." : {
+      "comment" : "failure reason"
+    },
+    "Expected checklist group data but found none." : {
+      "comment" : "failure reason"
+    },
+    "Expected newline but found none." : {
+      "comment" : "failure reason"
+    },
+    "Invalid checklist data." : {
+      "comment" : "failure reason"
+    },
+    "Invalid checklist group data." : {
+      "comment" : "failure reason"
+    },
+    "Invalid checklist item data." : {
+      "comment" : "failure reason"
+    },
+    "Invalid encoding." : {
+      "comment" : "failure reason"
+    },
+    "Invalid header data." : {
+      "comment" : "failure reason"
+    },
+    "Invalid indent level ‘%@’." : {
+      "comment" : "failure reason"
+    },
+    "Invalid indent value “%@”." : {
+      "comment" : "failure reason"
+    },
+    "Invalid item type “%@”." : {
+      "comment" : "failure reason"
+    },
+    "Invalid magic number or revision." : {
+      "comment" : "failure reason"
+    },
+    "Missing end data." : {
+      "comment" : "failure reason"
+    },
+    "Output URL can’t be written to." : {
+      "comment" : "failure reason"
+    },
+    "String cannot be encoded as CP1252." : {
+      "comment" : "failure reason"
+    },
+    "Verify that all checklists, groups, and items contain no special characters." : {
+      "comment" : "recovery suggestion"
+    },
+    "Verify that the .ace file is properly formatted." : {
+      "comment" : "recovery suggestion"
+    },
+    "Verify that the checklist was encoded with the same version of GarminACE." : {
+      "comment" : "recovery suggestion"
+    },
+    "Verify that the URL points to a file with write permission." : {
+      "comment" : "recovery suggestion"
+    }
+  },
+  "version" : "1.0"
+}
