@@ -1,12 +1,11 @@
-// swift-tools-version:5.10
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version:6.0
 
 import PackageDescription
 
 let package = Package(
     name: "GarminACE",
     defaultLocalization: "en",
-    platforms: [.macOS(.v13), .iOS(.v16), .watchOS(.v9), .tvOS(.v16)],
+    platforms: [.macOS(.v14), .iOS(.v17), .watchOS(.v10), .tvOS(.v17), .visionOS(.v1)],
     products: [
         .library(
             name: "GarminACE",
@@ -22,10 +21,12 @@ let package = Package(
     targets: [
         .target(
             name: "GarminACE",
-            dependencies: ["SwiftScanner", "CryptoSwift"]),
+            dependencies: ["SwiftScanner", "CryptoSwift"],
+            resources: [.process("Localizable.xcstrings")]),
         .testTarget(
             name: "GarminACETests",
             dependencies: ["GarminACE", "Nimble", "Quick"],
             resources: [.copy("Resources")])
-    ]
+    ],
+    swiftLanguageModes: [.v5, .v6]
 )

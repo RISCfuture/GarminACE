@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -16,12 +16,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swift: ["5.9", "5.10"]
-        os: [macos-14]
+        swift: ["6.0"]
+        os: [macos-14, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: swift-actions/setup-swift@v2
+      - uses: actions/checkout@v4
+      - uses: SwiftyLab/setup-swift@latest
         with:
           swift-version: ${{ matrix.swift }}
       - name: Build
