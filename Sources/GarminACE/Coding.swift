@@ -1,11 +1,6 @@
 import Foundation
 
 extension Indent: Codable {
-    private enum Key: CodingKey {
-        case type
-        case level
-    }
-    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Key.self)
         let type = try container.decode(String.self, forKey: .type)
@@ -17,7 +12,7 @@ extension Indent: Codable {
             default: throw CodingError.unknownIndent(type)
         }
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: Key.self)
         switch self {
@@ -28,17 +23,14 @@ extension Indent: Codable {
                 try container.encode("centered", forKey: .type)
         }
     }
+
+    private enum Key: CodingKey {
+        case type
+        case level
+    }
 }
 
 extension Checklist.Item: Codable {
-    private enum Key: CodingKey {
-        case type
-        case text
-        case challenge
-        case response
-        case indent
-    }
-    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Key.self)
         let type = try container.decode(String.self, forKey: .type)
@@ -73,31 +65,31 @@ extension Checklist.Item: Codable {
             default: throw CodingError.unknownItemType(type)
         }
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: Key.self)
         switch self {
-            case .title(let text, let indent):
+            case let .title(text, indent):
                 try container.encode("title", forKey: .type)
                 try container.encode(text, forKey: .text)
                 try container.encode(indent, forKey: .indent)
-            case .warning(let text, let indent):
+            case let .warning(text, indent):
                 try container.encode("warning", forKey: .type)
                 try container.encode(text, forKey: .text)
                 try container.encode(indent, forKey: .indent)
-            case .caution(let text, let indent):
+            case let .caution(text, indent):
                 try container.encode("caution", forKey: .type)
                 try container.encode(text, forKey: .text)
                 try container.encode(indent, forKey: .indent)
-            case .note(let text, let indent):
+            case let .note(text, indent):
                 try container.encode("note", forKey: .type)
                 try container.encode(text, forKey: .text)
                 try container.encode(indent, forKey: .indent)
-            case .plaintext(let text, let indent):
+            case let .plaintext(text, indent):
                 try container.encode("plaintext", forKey: .type)
                 try container.encode(text, forKey: .text)
                 try container.encode(indent, forKey: .indent)
-            case .challengeResponse(let challenge, let response, let indent):
+            case let .challengeResponse(challenge, response, indent):
                 try container.encode("challengeResponse", forKey: .type)
                 try container.encode(challenge, forKey: .challenge)
                 try container.encode(response, forKey: .response)
@@ -106,5 +98,12 @@ extension Checklist.Item: Codable {
                 try container.encode("blank", forKey: .type)
         }
     }
-}
 
+    private enum Key: CodingKey {
+        case type
+        case text
+        case challenge
+        case response
+        case indent
+    }
+}

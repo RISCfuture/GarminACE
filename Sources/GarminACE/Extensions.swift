@@ -17,10 +17,9 @@ extension OutputStream {
                 )
             }
             if bytesWritten == -1 { throw streamError! }
-            else if bytesWritten == 0 { return }
-            
+            if bytesWritten == 0 { return }
+
             remaining = remaining.dropFirst(bytesWritten)
         }
     }
 }
-

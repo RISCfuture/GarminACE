@@ -9,14 +9,14 @@ let package = Package(
     products: [
         .library(
             name: "GarminACE",
-            targets: ["GarminACE"]),
+            targets: ["GarminACE"])
     ],
     dependencies: [
         .package(url: "https://github.com/malcommac/SwiftScanner.git", from: "1.1.0"),
-        .package(url: "https://github.com/Quick/Quick.git", from: "2.2.0"),
-        .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.7"),
-        .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.0.0"),
-        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.6.0")
+        .package(url: "https://github.com/Quick/Quick.git", from: "7.6.2"),
+        .package(url: "https://github.com/Quick/Nimble.git", from: "13.7.1"),
+        .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.4.3"),
+        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.8.4")
     ],
     targets: [
         .target(
