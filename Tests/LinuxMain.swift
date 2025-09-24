@@ -1,6 +1,5 @@
-import XCTest
-
 import GarminACETests
+import XCTest
 
 var tests = [XCTestCaseEntry]()
 
