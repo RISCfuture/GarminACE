@@ -34,6 +34,24 @@ jobs:
            --disable-indexing \
            --transform-for-static-hosting \
            --hosting-base-path GarminACE
+      - name: Create root redirect
+        run: |
+          cat > ./docs/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta http-equiv="refresh" content="0; url=/GarminACE/documentation/garminace/">
+              <title>GarminACE Documentation</title>
+              <script>
+                  window.location.replace("/GarminACE/documentation/garminace/");
+              </script>
+          </head>
+          <body>
+              <p>Redirecting to <a href="/GarminACE/documentation/garminace/">GarminACE Documentation</a>...</p>
+          </body>
+          </html>
+          EOF
       - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
