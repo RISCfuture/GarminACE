@@ -185,7 +185,8 @@ extension EncoderError: LocalizedError {
       case .invalidCharacterForEncoding:
         #if canImport(Darwin)
           return String(
-            localized: "Verify that all checklists, groups, and items contain no special characters.",
+            localized:
+              "Verify that all checklists, groups, and items contain no special characters.",
             comment: "recovery suggestion"
           )
         #else

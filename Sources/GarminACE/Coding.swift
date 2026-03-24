@@ -69,27 +69,27 @@ extension Checklist.Item: Codable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: Key.self)
     switch self {
-      case .title(let text, let indent):
+      case let .title(text, indent):
         try container.encode("title", forKey: .type)
         try container.encode(text, forKey: .text)
         try container.encode(indent, forKey: .indent)
-      case .warning(let text, let indent):
+      case let .warning(text, indent):
         try container.encode("warning", forKey: .type)
         try container.encode(text, forKey: .text)
         try container.encode(indent, forKey: .indent)
-      case .caution(let text, let indent):
+      case let .caution(text, indent):
         try container.encode("caution", forKey: .type)
         try container.encode(text, forKey: .text)
         try container.encode(indent, forKey: .indent)
-      case .note(let text, let indent):
+      case let .note(text, indent):
         try container.encode("note", forKey: .type)
         try container.encode(text, forKey: .text)
         try container.encode(indent, forKey: .indent)
-      case .plaintext(let text, let indent):
+      case let .plaintext(text, indent):
         try container.encode("plaintext", forKey: .type)
         try container.encode(text, forKey: .text)
         try container.encode(indent, forKey: .indent)
-      case .challengeResponse(let challenge, let response, let indent):
+      case let .challengeResponse(challenge, response, indent):
         try container.encode("challengeResponse", forKey: .type)
         try container.encode(challenge, forKey: .challenge)
         try container.encode(response, forKey: .response)

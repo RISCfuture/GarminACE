@@ -91,27 +91,27 @@ public class ACEFileEncoder {
 
   private func encode(item: Checklist.Item, to data: inout Data) throws {
     switch item {
-      case .title(let text, let indent):
+      case let .title(text, indent):
         try encode(string: "t", to: &data)
         try encode(indent: indent, to: &data)
         try encode(string: text, to: &data, newline: true)
-      case .warning(let text, let indent):
+      case let .warning(text, indent):
         try encode(string: "w", to: &data)
         try encode(indent: indent, to: &data)
         try encode(string: text, to: &data, newline: true)
-      case .caution(let text, let indent):
+      case let .caution(text, indent):
         try encode(string: "c", to: &data)
         try encode(indent: indent, to: &data)
         try encode(string: text, to: &data, newline: true)
-      case .note(let text, let indent):
+      case let .note(text, indent):
         try encode(string: "n", to: &data)
         try encode(indent: indent, to: &data)
         try encode(string: text, to: &data, newline: true)
-      case .plaintext(let text, let indent):
+      case let .plaintext(text, indent):
         try encode(string: "p", to: &data)
         try encode(indent: indent, to: &data)
         try encode(string: text, to: &data, newline: true)
-      case .challengeResponse(let challenge, let response, let indent):
+      case let .challengeResponse(challenge, response, indent):
         try encode(string: "r", to: &data)
         try encode(indent: indent, to: &data)
         try encode(string: challenge, to: &data)
