@@ -24,7 +24,7 @@ final class ACEDecoderSpec: QuickSpec {
       expect(set.groups[0].checklists[0].name).to(equal("PRE-START"))
       expect(set.groups[0].checklists[0].items.count).to(equal(38))
 
-      guard case .title(let text, let indent) = set.groups[0].checklists[0].items[0] else {
+      guard case let .title(text, indent) = set.groups[0].checklists[0].items[0] else {
         fail("Expected .title, got \(set.groups[0].checklists[0].items[0])")
         return
       }
