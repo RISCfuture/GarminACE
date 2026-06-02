@@ -6,7 +6,7 @@ public class ACEFileDecoder {
 
   /**
    Decodes a `Data` instance into a ``ChecklistFile``.
-  
+
    - Parameter data: The data of the `.ace` file.
    - Returns: The parsed checklists.
    - Throws: If a parse error occurs.

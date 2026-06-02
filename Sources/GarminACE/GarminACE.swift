@@ -91,7 +91,7 @@ public final class Checklist: Codable {
 
     /**
      A header item.
-    
+
      - Parameter text: The item text.
      - Parameter indent: The indent level.
      */
@@ -99,7 +99,7 @@ public final class Checklist: Codable {
 
     /**
      A block of text presented at the warning (most critical) level.
-    
+
      - Parameter text: The item text.
      - Parameter indent: The indent level.
      */
@@ -107,7 +107,7 @@ public final class Checklist: Codable {
 
     /**
      A block of text presented at the caution level.
-    
+
      - Parameter text: The item text.
      - Parameter indent: The indent level.
      */
@@ -115,7 +115,7 @@ public final class Checklist: Codable {
 
     /**
      A block of text presented at the note (least critical) level.
-    
+
      - Parameter text: The item text.
      - Parameter indent: The indent level.
      */
@@ -123,7 +123,7 @@ public final class Checklist: Codable {
 
     /**
      An unformatted block of text.
-    
+
      - Parameter text: The item text.
      - Parameter indent: The indent level.
      */
@@ -132,7 +132,7 @@ public final class Checklist: Codable {
     /**
      A challenge prompt and its response. Challenge/responses are the only
      checklist item that can be checked by the user.
-    
+
      - Parameter challenge: The item challenge, such as "Flaps".
      - Parameter response: The challenge response, such as "DOWN".
      - Parameter indent: The indent level.
@@ -150,7 +150,7 @@ public final class Checklist: Codable {
 public enum Indent: Equatable {
   /**
    Text is indented _n_ levels deep from the left side.
-  
+
    - Parameter level: The indent level.
    */
   case level(_ level: UInt)

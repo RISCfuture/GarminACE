@@ -11,7 +11,7 @@ public class ACEFileEncoder {
 
   /**
    Creates a new instance for encoding.
-  
+
    - Parameter checklistSet: The checklist file to encode.
    */
   public init(checklistSet: ChecklistFile) {
@@ -20,7 +20,7 @@ public class ACEFileEncoder {
 
   /**
    Writes the `.ace` file data to a `Data` instance.
-  
+
    - Returns: The data containing the `.ace` data.
    */
   public func writeToData() throws -> Data {
@@ -31,7 +31,7 @@ public class ACEFileEncoder {
 
   /**
    Writes the `.ace` file.
-  
+
    - Parameter url: The file URL to write to.
    */
   public func write(to url: URL) throws {
@@ -42,7 +42,7 @@ public class ACEFileEncoder {
 
   /**
    Writes the `.ace` file data to a `Data` object.
-  
+
    - Parameter data: The `Data` to write to.
    */
   public func write(to data: inout Data) throws {

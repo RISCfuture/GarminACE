@@ -32,7 +32,7 @@ public enum DecoderError: Error {
 
   /**
    An invalid indent level was specified.
-  
+
    - Parameter indent: The indent level.
    */
   case invalidIndentLevel(_ indent: Character)
@@ -212,14 +212,14 @@ public enum CodingError: Error {
 
   /**
    An unknown value for an indent level was provided.
-  
+
    - Parameter value: The unknown value.
    */
   case unknownIndent(_ value: String)
 
   /**
    An unknown checklist item type was provided.
-  
+
    - Parameter value: The unknown value.
    */
   case unknownItemType(_ value: String)
