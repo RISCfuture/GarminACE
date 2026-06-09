@@ -16,6 +16,7 @@ import GarminACE
 let data = Data(contentsOf: myFileURL)
 let checkistSet = ACEFileDecoder().new(data)
 ```
+
 See the ``ChecklistFile`` documentation to learn about the model schema.
 
 A ``ChecklistFile`` can be written back to an `.ace` file using
