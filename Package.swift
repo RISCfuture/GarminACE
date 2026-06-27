@@ -2,6 +2,11 @@
 
 import PackageDescription
 
+let approachableConcurrency: [SwiftSetting] = [
+  .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+  .enableUpcomingFeature("InferIsolatedConformances")
+]
+
 let package = Package(
   name: "GarminACE",
   defaultLocalization: "en",
@@ -23,12 +28,14 @@ let package = Package(
     .target(
       name: "GarminACE",
       dependencies: ["SwiftScanner", "CryptoSwift"],
-      resources: [.process("Localizable.xcstrings")]
+      resources: [.process("Localizable.xcstrings")],
+      swiftSettings: approachableConcurrency
     ),
     .testTarget(
       name: "GarminACETests",
       dependencies: ["GarminACE", "Nimble", "Quick"],
-      resources: [.copy("Resources")]
+      resources: [.copy("Resources")],
+      swiftSettings: approachableConcurrency
     )
   ],
   swiftLanguageModes: [.v5, .v6]
