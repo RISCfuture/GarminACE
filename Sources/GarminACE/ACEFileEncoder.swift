@@ -100,7 +100,7 @@ public class ACEFileEncoder {
         try encode(indent: indent, to: &data)
         try encode(string: text, to: &data, newline: true)
       case let .caution(text, indent):
-        try encode(string: "c", to: &data)
+        try encode(string: "a", to: &data)
         try encode(indent: indent, to: &data)
         try encode(string: text, to: &data, newline: true)
       case let .note(text, indent):
@@ -109,6 +109,10 @@ public class ACEFileEncoder {
         try encode(string: text, to: &data, newline: true)
       case let .plaintext(text, indent):
         try encode(string: "p", to: &data)
+        try encode(indent: indent, to: &data)
+        try encode(string: text, to: &data, newline: true)
+      case let .challenge(text, indent):
+        try encode(string: "c", to: &data)
         try encode(indent: indent, to: &data)
         try encode(string: text, to: &data, newline: true)
       case let .challengeResponse(challenge, response, indent):

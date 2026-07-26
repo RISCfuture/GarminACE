@@ -21,8 +21,8 @@ Import a `.ace` file using `ACEFileDecoder`:
 ``` swift
 import GarminACE
 
-let data = Data(contentsOf: myFileURL)
-let checkistSet = ACEFileDecoder().new(data)
+let data = try Data(contentsOf: myFileURL)
+let checklistSet = try ACEFileDecoder().decode(data: data)
 ```
 
 See the `ChecklistFile` documentation to learn about the model schema.
@@ -31,15 +31,15 @@ A `ChecklistFile` can be written back to an `.ace` file using
 `ACEFileEncoder`:
 
 ``` swift
-ACEFileEncoder(checklistSet: checklists).write(to: fileURL)
+try ACEFileEncoder(checklistSet: checklistSet).write(to: fileURL)
 ```
 
-`ChecklistFile` is also `Codable` and `Decodable`, so you could re-save the
+`ChecklistFile` is also `Encodable` and `Decodable`, so you could re-save the
 checklist in a more palatable format like JSON:
 
 ``` swift
 let jsonData = try JSONEncoder().encode(checklistSet)
-let decodedChecklistSet = try JSONDecoder().decode(ChecklistFile.self, from: data)
+let decodedChecklistSet = try JSONDecoder().decode(ChecklistFile.self, from: jsonData)
 ```
 
 ## Documentation

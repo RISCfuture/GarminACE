@@ -55,6 +55,10 @@ extension Checklist.Item: Codable {
         let text = try container.decode(String.self, forKey: .text)
         let indent = try container.decode(Indent.self, forKey: .indent)
         self = .plaintext(text: text, indent: indent)
+      case "challenge":
+        let text = try container.decode(String.self, forKey: .text)
+        let indent = try container.decode(Indent.self, forKey: .indent)
+        self = .challenge(text: text, indent: indent)
       case "challengeResponse":
         let challenge = try container.decode(String.self, forKey: .challenge)
         let response = try container.decode(String.self, forKey: .response)
@@ -87,6 +91,10 @@ extension Checklist.Item: Codable {
         try container.encode(indent, forKey: .indent)
       case let .plaintext(text, indent):
         try container.encode("plaintext", forKey: .type)
+        try container.encode(text, forKey: .text)
+        try container.encode(indent, forKey: .indent)
+      case let .challenge(text, indent):
+        try container.encode("challenge", forKey: .type)
         try container.encode(text, forKey: .text)
         try container.encode(indent, forKey: .indent)
       case let .challengeResponse(challenge, response, indent):

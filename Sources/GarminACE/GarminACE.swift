@@ -130,14 +130,24 @@ public final class Checklist: Codable {
     case plaintext(text: String, indent: Indent)
 
     /**
-     A challenge prompt and its response. Challenge/responses are the only
-     checklist item that can be checked by the user.
+     A challenge prompt and its response. Challenge/responses are one of the two
+     checklist items that can be checked by the user.
 
      - Parameter challenge: The item challenge, such as "Flaps".
      - Parameter response: The challenge response, such as "DOWN".
      - Parameter indent: The indent level.
      */
     case challengeResponse(challenge: String, response: String, indent: Indent)
+
+    /**
+     A challenge prompt with no response, such as "Land as soon as possible".
+     Like ``challengeResponse(challenge:response:indent:)``, these items can be
+     checked by the user.
+
+     - Parameter text: The item challenge.
+     - Parameter indent: The indent level.
+     */
+    case challenge(text: String, indent: Indent)
 
     /// A blank line, for spacing.
     case blank

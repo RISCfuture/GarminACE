@@ -4,6 +4,9 @@ import SwiftScanner
 /// Decodes an `.ace` file into a ``ChecklistFile`` instance.
 public class ACEFileDecoder {
 
+  /// Creates a new decoder.
+  public init() {}
+
   /**
    Decodes a `Data` instance into a ``ChecklistFile``.
 
@@ -12,15 +15,25 @@ public class ACEFileDecoder {
    - Throws: If a parse error occurs.
    */
   public func decode(data: Data) throws -> ChecklistFile {
-    let header = data[data.startIndex...data.index(data.startIndex, offsetBy: 9)]
-    guard header == Constants.magicNumberAndRevision else {
+    guard data.count >= Constants.headerLength, isValidHeader(data.prefix(Constants.headerLength))
+    else {
       throw DecoderError.invalidMagicNumberOrRevision
     }
-    let body = data.advanced(by: 10)
+    let body = data.advanced(by: Constants.headerLength)
     guard let bodyString = String(data: body, encoding: .windowsCP1252) else {
       throw DecoderError.invalidEncoding
     }
     return try decodeBody(bodyString)
+  }
+
+  private func isValidHeader(_ header: Data) -> Bool {
+    let magicNumber = header.prefix(Constants.magicNumber.count)
+    let revision = header.dropFirst(Constants.magicNumber.count).prefix(4)
+    let terminator = header.suffix(Constants.headerTerminator.count)
+
+    return magicNumber.elementsEqual(Constants.magicNumber)
+      && Constants.knownRevisions.contains { revision.elementsEqual($0) }
+      && terminator.elementsEqual(Constants.headerTerminator)
   }
 
   private func decodeBody(_ body: String) throws -> ChecklistFile {
@@ -143,6 +156,7 @@ public class ACEFileDecoder {
       case .caution: return .caution(text: content, indent: indent)
       case .note: return .note(text: content, indent: indent)
       case .plaintext: return .plaintext(text: content, indent: indent)
+      case .challenge: return .challenge(text: content, indent: indent)
       case .challengeResponse:
         let parts = (content).split(separator: Constants.challengeResponseSeparator)
         return Checklist.Item.challengeResponse(
@@ -162,9 +176,10 @@ public class ACEFileDecoder {
   private enum ItemType: Character {
     case title = "t"
     case warning = "w"
-    case caution = "c"
+    case caution = "a"
     case note = "n"
     case plaintext = "p"
+    case challenge = "c"
     case challengeResponse = "r"
   }
 }
