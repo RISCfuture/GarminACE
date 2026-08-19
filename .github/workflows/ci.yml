@@ -78,3 +78,17 @@ jobs:
           wget -O .swift-format https://gist.githubusercontent.com/RISCfuture/e0c21afb7bd80a88d128a42bf40d2ecd/raw/.swift-format
       - name: Run swift-format lint
         run: swift format lint --strict -r .
+  docs:
+    name: Build Documentation
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: SwiftyLab/setup-swift@latest
+        with:
+          swift-version: "6.2"
+      - name: Build documentation
+        run: |
+          swift package \
+           --allow-writing-to-directory "$RUNNER_TEMP/docs" \
+           generate-documentation --target GarminACE --output-path "$RUNNER_TEMP/docs" \
+           --warnings-as-errors
