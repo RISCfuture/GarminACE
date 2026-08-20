@@ -21,8 +21,8 @@ let package = Package(
     .package(url: "https://github.com/malcommac/SwiftScanner.git", from: "1.1.0"),
     .package(url: "https://github.com/Quick/Quick.git", from: "7.6.2"),
     .package(url: "https://github.com/Quick/Nimble.git", from: "14.0.0"),
-    .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.4.3"),
-    .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.8.4")
+    .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.5.0"),
+    .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.10.0")
   ],
   targets: [
     .target(
