@@ -1,29 +1,25 @@
 import Foundation
-import Nimble
-import Quick
+import Testing
 
 @testable import GarminACE
 
-final class ACEEncoderSpec: QuickSpec {
-  private static var checklistSet: ChecklistFile {
-    get throws {
-      let url = Bundle.module.url(forResource: "g3x_cklst", withExtension: "json")!
-      let data = try Data(contentsOf: url)
-      return try JSONDecoder().decode(ChecklistFile.self, from: data)
-    }
+@Suite("ACE file encoder")
+struct ACEFileEncoderTests {
+
+  static func checklistSet() throws -> ChecklistFile {
+    let url = try #require(Bundle.module.url(forResource: "g3x_cklst", withExtension: "json"))
+    return try JSONDecoder().decode(ChecklistFile.self, from: Data(contentsOf: url))
   }
 
-  private static var fixtureData: Data {
-    get throws {
-      let url = Bundle.module.url(forResource: "g3x_cklst", withExtension: "ace")!
-      return try Data(contentsOf: url)
-    }
+  static func fixtureData() throws -> Data {
+    let url = try #require(Bundle.module.url(forResource: "g3x_cklst", withExtension: "ace"))
+    return try Data(contentsOf: url)
   }
 
-  override static func spec() {
-    it("exports the example checklist") {
-      let data = try ACEFileEncoder(checklistSet: self.checklistSet).writeToData()
-      try expect(data).to(equal(self.fixtureData))
-    }
+  @Test("Exports the example checklist")
+  func exportsExampleChecklist() throws {
+    let data = try ACEFileEncoder(checklistSet: Self.checklistSet()).writeToData()
+    let expected = try Self.fixtureData()
+    #expect(data == expected)
   }
 }

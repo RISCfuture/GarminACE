@@ -62,5 +62,5 @@ open the GarminACE package in Xcode and choose **Build Documentation** from the
 
 ## Developing
 
-This package contains a short test suite written using Nimble and Quick. Use `swift test`
+This package contains a short test suite written using Swift Testing. Use `swift test`
 to run the suite.
