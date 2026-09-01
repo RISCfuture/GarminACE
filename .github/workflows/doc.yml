@@ -23,6 +23,14 @@ jobs:
       - uses: SwiftyLab/setup-swift@latest
         with:
           swift-version: "6.2"
+      - name: Cache SwiftPM build products
+        uses: actions/cache@v6
+        with:
+          path: |
+            .build
+            ~/.cache/org.swift.swiftpm
+            ~/Library/Caches/org.swift.swiftpm
+          key: swiftpm-deploy-docs-macos-latest-swift6.2-${{ hashFiles('Package.resolved') }}
       - name: Build
         run: |
           swift package \
