@@ -1,7 +1,7 @@
 import Foundation
 
 extension Indent: Codable {
-  public init(from decoder: Decoder) throws {
+  public init(from decoder: any Decoder) throws {
     let container = try decoder.container(keyedBy: Key.self)
     let type = try container.decode(String.self, forKey: .type)
     switch type {
@@ -13,7 +13,7 @@ extension Indent: Codable {
     }
   }
 
-  public func encode(to encoder: Encoder) throws {
+  public func encode(to encoder: any Encoder) throws {
     var container = encoder.container(keyedBy: Key.self)
     switch self {
       case .level(let level):
@@ -31,7 +31,7 @@ extension Indent: Codable {
 }
 
 extension Checklist.Item: Codable {
-  public init(from decoder: Decoder) throws {
+  public init(from decoder: any Decoder) throws {
     let container = try decoder.container(keyedBy: Key.self)
     let type = try container.decode(String.self, forKey: .type)
     switch type {
@@ -70,7 +70,7 @@ extension Checklist.Item: Codable {
     }
   }
 
-  public func encode(to encoder: Encoder) throws {
+  public func encode(to encoder: any Encoder) throws {
     var container = encoder.container(keyedBy: Key.self)
     switch self {
       case let .title(text, indent):
