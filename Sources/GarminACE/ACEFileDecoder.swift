@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 import SwiftScanner
 
 /// Decodes an `.ace` file into a ``ChecklistFile`` instance.

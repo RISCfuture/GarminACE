@@ -1,5 +1,5 @@
 import CryptoSwift
-import Foundation
+public import Foundation
 
 /// Encodes a ``ChecklistFile`` into a `.ace` file.
 public class ACEFileEncoder {

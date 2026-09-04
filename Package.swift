@@ -2,9 +2,13 @@
 
 import PackageDescription
 
-let approachableConcurrency: [SwiftSetting] = [
+let upcomingFeatures: [SwiftSetting] = [
   .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-  .enableUpcomingFeature("InferIsolatedConformances")
+  .enableUpcomingFeature("InferIsolatedConformances"),
+  .enableUpcomingFeature("ImmutableWeakCaptures"),
+  .enableUpcomingFeature("MemberImportVisibility"),
+  .enableUpcomingFeature("ExistentialAny"),
+  .enableUpcomingFeature("InternalImportsByDefault")
 ]
 
 let package = Package(
@@ -27,13 +31,13 @@ let package = Package(
       name: "GarminACE",
       dependencies: ["SwiftScanner", "CryptoSwift"],
       resources: [.process("Localizable.xcstrings")],
-      swiftSettings: approachableConcurrency
+      swiftSettings: upcomingFeatures
     ),
     .testTarget(
       name: "GarminACETests",
       dependencies: ["GarminACE"],
       resources: [.copy("Resources")],
-      swiftSettings: approachableConcurrency
+      swiftSettings: upcomingFeatures
     )
   ],
   swiftLanguageModes: [.v5, .v6]
