@@ -3,8 +3,8 @@ import Testing
 
 @testable import GarminACE
 
-@Suite("ACE file encoder")
-struct ACEFileEncoderTests {
+@Suite
+struct `ACE file encoder` {
 
   static func checklistSet() throws -> ChecklistFile {
     let url = try #require(Bundle.module.url(forResource: "g3x_cklst", withExtension: "json"))
@@ -16,8 +16,8 @@ struct ACEFileEncoderTests {
     return try Data(contentsOf: url)
   }
 
-  @Test("Exports the example checklist")
-  func exportsExampleChecklist() throws {
+  @Test
+  func `exports the example checklist`() throws {
     let data = try ACEFileEncoder(checklistSet: Self.checklistSet()).writeToData()
     let expected = try Self.fixtureData()
     #expect(data == expected)
