@@ -3,16 +3,16 @@ import Testing
 
 @testable import GarminACE
 
-@Suite("ACE file decoder")
-struct ACEFileDecoderTests {
+@Suite
+struct `ACE file decoder` {
 
   static func fixtureData() throws -> Data {
     let url = try #require(Bundle.module.url(forResource: "g3x_cklst", withExtension: "ace"))
     return try Data(contentsOf: url)
   }
 
-  @Test("Imports the example checklist")
-  func importsExampleChecklist() throws {
+  @Test
+  func `imports the example checklist`() throws {
     let set = try ACEFileDecoder().decode(data: Self.fixtureData())
 
     #expect(set.name == "GARMIN CHECKLIST PN XXX-XXXXX-XX")
