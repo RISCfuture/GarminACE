@@ -14,7 +14,7 @@ let upcomingFeatures: [SwiftSetting] = [
 let package = Package(
   name: "GarminACE",
   defaultLocalization: "en",
-  platforms: [.macOS(.v14), .iOS(.v17), .watchOS(.v10), .tvOS(.v17), .visionOS(.v1)],
+  platforms: [.macOS(.v13), .iOS(.v16), .watchOS(.v9), .tvOS(.v16), .visionOS(.v1)],
   products: [
     .library(
       name: "GarminACE",
