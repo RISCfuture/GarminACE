@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased]
+
+### Removed
+
+- Dropped the CryptoSwift dependency. The `.ace` trailer checksum is computed
+  by a local reflected CRC-32 implementation, so the package now depends only
+  on SwiftScanner.
+
 ## [2.0.0] - 2026-09-14
 
 ### Changed
