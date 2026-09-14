@@ -36,7 +36,7 @@ let package = Package(
     .testTarget(
       name: "GarminACETests",
       dependencies: ["GarminACE"],
-      resources: [.copy("Resources")],
+      resources: [.process("Resources")],
       swiftSettings: upcomingFeatures
     )
   ],
