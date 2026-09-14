@@ -1,4 +1,3 @@
-import CryptoSwift
 public import Foundation
 
 /// Encodes a ``ChecklistFile`` into a `.ace` file.
@@ -148,11 +147,7 @@ public class ACEFileEncoder {
   }
 
   private func checksum(for data: Data) -> Data {
-    // In CryptoSwift 1.9, crc32() returns Data directly
-    let crcData = data.crc32()
-    // Convert Data to bytes array, reverse, and apply bitwise NOT
-    let bytes = [UInt8](crcData)
-    let reversedBytes = bytes.reversed().map { ~$0 & 0xFF }
-    return Data(reversedBytes)
+    let complementedCRC = ~CRC32.checksum(of: data)
+    return withUnsafeBytes(of: complementedCRC.littleEndian) { Data($0) }
   }
 }

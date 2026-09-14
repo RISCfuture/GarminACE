@@ -23,13 +23,12 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/malcommac/SwiftScanner.git", from: "1.1.0"),
-    .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.5.0"),
-    .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.10.0")
+    .package(url: "https://github.com/apple/swift-docc-plugin.git", from: "1.5.0")
   ],
   targets: [
     .target(
       name: "GarminACE",
-      dependencies: ["SwiftScanner", "CryptoSwift"],
+      dependencies: ["SwiftScanner"],
       resources: [.process("Localizable.xcstrings")],
       swiftSettings: upcomingFeatures
     ),
