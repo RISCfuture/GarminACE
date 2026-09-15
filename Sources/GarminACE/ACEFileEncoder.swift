@@ -148,6 +148,6 @@ public class ACEFileEncoder {
 
   private func checksum(for data: Data) -> Data {
     let complementedCRC = ~CRC32.checksum(of: data)
-    return withUnsafeBytes(of: complementedCRC.littleEndian) { Data($0) }
+    return withUnsafeBytes(of: complementedCRC.littleEndian) { unsafe Data($0) }
   }
 }
