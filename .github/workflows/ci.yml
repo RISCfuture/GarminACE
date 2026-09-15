@@ -2,15 +2,19 @@
 #
 # Category A (tools-version 6.2 + macOS 26 min): macos-26 + Swift 6.2
 # Category B (tools-version 6.2 + older macOS):  macos-15 + 6.2, macos-26 + 6.2
-# Category C (tools-version 6.0):                macos-15 + 6.1, macos-15 + 6.3, macos-15 + 6.4,
+# Category C (tools-version 6.0):                macos-15 + 6.1, macos-15 + 6.3,
 #                                                macos-26 + 6.3, macos-26 + 6.4
-# Linux (if viable):                             ubuntu + Swift 6.1, ubuntu + Swift 6.3,
-#                                                ubuntu + Swift 6.4
-#
-# Test names are raw identifiers (SE-0451), which need a 6.2+ compiler, so legs
-# below Swift 6.2 build the library only and the 6.3 and 6.4 legs run the test suite.
+# Linux (if viable):                             ubuntu + Swift 6.3, ubuntu + Swift 6.4
 #
 # When bumping tools-version to 6.2: drop 6.0/6.1, move to Category A or B
+#
+# GarminACE uses tools-version 6.2, so only Swift 6.3 and 6.4 entries qualify:
+# an older toolchain cannot parse the manifest at all.
+#
+# Swift 6.4 runs on macos-26 only. This package ships a String Catalog, so SwiftPM
+# generates string symbols by invoking `xcstringstool generate-symbols --language`,
+# and that flag needs a newer xcstringstool than Xcode 16.4 supplies. Xcode 16.4 is
+# the newest the macos-15 runner image carries, so macos-15 stays on Swift 6.3.
 
 name: CI
 
@@ -32,20 +36,11 @@ jobs:
       matrix:
         include:
           - os: macos-15
-            swift: "6.1"
-            test: false
-          - os: macos-15
             swift: "6.3"
-            test: true
-          - os: macos-15
-            swift: "6.4"
-            test: true
           - os: macos-26
             swift: "6.3"
-            test: true
           - os: macos-26
             swift: "6.4"
-            test: true
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
@@ -63,7 +58,6 @@ jobs:
       - name: Build
         run: swift build -v
       - name: Test
-        if: matrix.test
         run: swift test -v
   test-linux:
     name: Test on Linux
@@ -71,7 +65,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swift: ["6.1", "6.3", "6.4"]
+        swift: ["6.3", "6.4"]
     container:
       image: swift:${{ matrix.swift }}
     steps:

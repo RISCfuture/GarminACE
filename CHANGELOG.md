@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Building the package now needs Swift 6.2 or newer. The manifest moves to
+  tools version 6.2 to enable strict memory safety (SE-0458).
+
 ### Removed
 
 - Dropped the CryptoSwift dependency. The `.ace` trailer checksum is computed
