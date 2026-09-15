@@ -1,6 +1,12 @@
 # Change Log
 
-## [2.0.0] - 2026-07-26
+## [2.0.0] - 2026-09-14
+
+### Changed
+
+- Lowered the minimum platform versions to macOS 13, iOS 16, watchOS 9, and
+  tvOS 16 (from macOS 14, iOS 17, watchOS 10, and tvOS 17). Nothing in the
+  package required the higher versions.
 
 ### Fixed
 
