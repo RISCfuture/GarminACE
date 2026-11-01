@@ -10,7 +10,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7.0.1
       - name: Record toolchain version
         id: swift
         run: |
@@ -19,7 +19,7 @@ jobs:
           [ -n "$digest" ] || { echo "could not determine Swift toolchain version"; exit 1; }
           echo "version=$digest" >> "$GITHUB_OUTPUT"
       - name: Cache SwiftPM build products
-        uses: actions/cache@v6
+        uses: actions/cache@v6.1.0
         with:
           path: |
             .build
@@ -31,4 +31,4 @@ jobs:
       - name: Run Periphery
         env:
           PERIPHERY_TOKEN: ${{ secrets.PERIPHERY_TOKEN }}
-        run: periphery scan --strict
+        run: periphery scan --strict -- --build-system native

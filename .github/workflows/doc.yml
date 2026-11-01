@@ -19,18 +19,18 @@ jobs:
     name: Generate Documentation
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: SwiftyLab/setup-swift@latest
+      - uses: actions/checkout@v7.0.1
+      - uses: SwiftyLab/setup-swift@v1.14.2
         with:
-          swift-version: "6.2"
+          swift-version: "6.4"
       - name: Cache SwiftPM build products
-        uses: actions/cache@v6
+        uses: actions/cache@v6.1.0
         with:
           path: |
             .build
             ~/.cache/org.swift.swiftpm
             ~/Library/Caches/org.swift.swiftpm
-          key: swiftpm-deploy-docs-macos-latest-swift6.2-${{ hashFiles('Package.resolved') }}
+          key: swiftpm-deploy-docs-macos-latest-swift6.4-${{ hashFiles('Package.resolved') }}
       - name: Build
         run: |
           swift package \
@@ -58,7 +58,7 @@ jobs:
           </html>
           EOF
       - name: Upload
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: "docs/"
 
@@ -71,4 +71,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v5.0.1
